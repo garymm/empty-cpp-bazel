@@ -18,6 +18,10 @@ llvm.toolchain(
         "linux-aarch64": "clang+llvm-19.1.0-aarch64-linux-gnu",
         "linux-x86_64": "LLVM-19.1.0-Linux-X64",
     },
+    sha256 = {
+        "linux-aarch64": "bb7f57a96ea4f23b2ac7517edd26f063759f70239f20a5019ca48040b9ebfeda",
+        "linux-x86_64": "cee77d641690466a193d9b88c89705de1c02bbad46bde6a3b126793c0a0f2923",
+    },
 )
 
 use_repo(llvm, "llvm_toolchain")
