@@ -1,0 +1,55 @@
+bazel_dep(name = "toolchains_llvm", version = "1.2.0")
+
+# Configure and register the toolchain.
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(
+    stdlib = {"": "builtin-libc++"},
+    cxx_standard = {"": "c++23"},
+    link_libs = {
+        # Work around https://github.com/bazelbuild/bazel/issues/12797
+        "": ["--driver-mode=g++"],
+    },
+    llvm_version = "19.1.0",
+    urls = {
+        "linux-aarch64": ["https://snapshots.linaro.org/llvm-toolchain/19/19.1.0/clang+llvm-19.1.0-aarch64-linux-gnu.tar.xz"],
+        "linux-x86_64": ["https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.0/LLVM-19.1.0-Linux-X64.tar.xz"],
+    },
+    strip_prefix = {
+        "linux-aarch64": "clang+llvm-19.1.0-aarch64-linux-gnu",
+        "linux-x86_64": "LLVM-19.1.0-Linux-X64",
+    },
+)
+
+use_repo(llvm, "llvm_toolchain")
+
+register_toolchains("@llvm_toolchain//:all")
+
+bazel_dep(name = "rules_cc", version = "0.0.12")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+BOOST_UT_VERSION = "9dfe99371ab169e1436710ec92ecdbab85b4d335"
+
+http_archive(
+    name = "boost_ut",
+    build_file_content = """
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "boost_ut",
+    hdrs = ["include/boost/ut.hpp"],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "f43840efaf7497e4a5bfb9aa6828417105e91276aa0b01f1b5be4923fb721d57",
+    strip_prefix = "ut-%s" % BOOST_UT_VERSION,
+    url = "https://github.com/boost-ext/ut/archive/%s.tar.gz" % BOOST_UT_VERSION,
+)
+
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+git_override(
+    module_name = "hedron_compile_commands",
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+    commit = "4f28899228fb3ad0126897876f147ca15026151e",
+)
