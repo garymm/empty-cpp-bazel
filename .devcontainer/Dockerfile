@@ -3,7 +3,8 @@ FROM ubuntu:24.04
 # unzip, zip required by bazel.
 # python3 required by the bazel compile commands generator.
 # libc6-dev, libxml2 required by the LLVM toolchain that bazel invokes.
-RUN apt-get update -y && apt-get install -y unzip zip wget git python3 libc6-dev libxml2
+# clangd for clangd language server in VS Code.
+RUN apt-get update -y && apt-get install -y unzip zip wget git python3 libc6-dev libxml2 clangd
 
 # Please keep the bazel version here in sync with .bazeliskrc
 RUN if [ "$(uname -m)" = "x86_64" ]; then \

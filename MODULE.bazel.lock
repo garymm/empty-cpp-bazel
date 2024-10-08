@@ -116,7 +116,7 @@
     "@@toolchains_llvm~//toolchain/extensions:llvm.bzl%llvm": {
       "general": {
         "bzlTransitiveDigest": "dZkcElkfice3BvKPXtFwrvPABm8ac+SwfynSinwK4dQ=",
-        "usagesDigest": "7B1Gu+JsTa4gCfXAoe301HYpjRjFrBGgiQPwPHt3KG4=",
+        "usagesDigest": "ITKWJRGGV+4ZnYuQp+PqKRzG95moyMFDvxpH3nBZCq8=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -143,7 +143,8 @@
               "link_flags": {},
               "link_libs": {
                 "": [
-                  "--driver-mode=g++"
+                  "--driver-mode=g++",
+                  "-nostdlib++"
                 ]
               },
               "llvm_versions": {
@@ -151,9 +152,7 @@
               },
               "opt_compile_flags": {},
               "opt_link_flags": {},
-              "stdlib": {
-                "": "builtin-libc++"
-              },
+              "stdlib": {},
               "target_settings": {},
               "unfiltered_compile_flags": {},
               "toolchain_roots": {},
