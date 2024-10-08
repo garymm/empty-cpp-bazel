@@ -1,14 +1,9 @@
 FROM ubuntu:24.04
 
-# 'unzip zip' are required by bazel.
-# python3 is required by the bazel compile commands generator.
-# libxml2 is required by the LLVM toolchain that bazel invokes.
-RUN apt-get update -y && \
-    if [ "$(uname -m)" = "x86_64" ]; then \
-        apt-get install -y unzip zip wget git python3 libxml2; \
-    else \
-        apt-get install -y unzip zip wget git python3 libxml2; \
-    fi
+# unzip, zip required by bazel.
+# python3 required by the bazel compile commands generator.
+# libc6-dev, libxml2 required by the LLVM toolchain that bazel invokes.
+RUN apt-get update -y && apt-get install -y unzip zip wget git python3 libc6-dev libxml2
 
 # Please keep the bazel version here in sync with .bazeliskrc
 RUN if [ "$(uname -m)" = "x86_64" ]; then \

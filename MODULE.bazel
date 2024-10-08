@@ -3,11 +3,14 @@ bazel_dep(name = "toolchains_llvm", version = "1.2.0")
 # Configure and register the toolchain.
 llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
-    stdlib = {"": "builtin-libc++"},
     cxx_standard = {"": "c++23"},
     link_libs = {
-        # Work around https://github.com/bazelbuild/bazel/issues/12797
-        "": ["--driver-mode=g++"],
+        "": [
+            # Work around https://github.com/bazelbuild/bazel/issues/12797
+            "--driver-mode=g++",
+            # Not sure why this is needed in addition to stdlib specification above, but it is.
+            "-nostdlib++",
+        ],
     },
     llvm_version = "19.1.0",
     urls = {
